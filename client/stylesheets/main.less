@@ -1,0 +1,99 @@
+@import 'util/reset.import.less';
+
+// Mixins & utilities
+@import 'util/helpers.import.less';
+@import 'util/lesshat.import.less';
+@import 'util/fontface.import.less';
+@import 'util/text.import.less';
+@import 'util/typography.import.less';
+@import 'util/variables.import.less';
+
+// Global namespace
+@import 'globals/base.import.less';
+@import 'globals/button.import.less';
+@import 'globals/form.import.less';
+@import 'globals/icon.import.less';
+@import 'globals/layout.import.less';
+@import 'globals/link.import.less';
+@import 'globals/menu.import.less';
+@import 'globals/nav.import.less';
+
+// Global templates
+@import 'globals/list-items.import.less';
+@import 'globals/message.import.less';
+@import 'globals/notification.import.less';
+
+// Templates
+@import '../templates/lists-show.import.less';
+@import '../templates/auth.import.less';
+@import '../templates/app-not-found.import.less';
+@import '../templates/loading.import.less';
+
+.timeline {
+  position: absolute;
+  left: 48%;
+  padding-top: 30px;
+  border-left: 2px solid rgba(0,0,0,0.2);
+}
+
+.dot {
+  position: relative;
+  left: -6px;
+  padding-bottom: 30px;
+  cursor: pointer;
+}
+.dot:hover .circle {
+  -webkit-transform-origin: center;
+  -webkit-transform: scale(2.4);
+}
+.dot:hover .items {
+  -webkit-transform-origin: left center;
+  -webkit-transform: scale(1.2) translateX(2px) translateY(-3px);
+}
+.dot:hover + .dot .circle,
+.dot.prev .circle  {
+  -webkit-transform: scale(1.6);
+  -webkit-transform-origin: center;
+}
+
+.circle {
+  position: relative;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  border: 2px solid rgb(0,0,0);
+  background: #fff;
+
+  transition: all 0.15s linear;
+}
+
+
+.items {
+  position: absolute;
+  top: -6px;
+  margin-left: 20px;
+
+  transition: all 0.15s linear;
+}
+.item {
+  position: absolute;
+  color: #222;
+  background: transparent;
+  border: none;
+  transition: all 0.2s linear; 
+}
+.item:focus {
+  outline: none;
+}
+
+.day {
+  position: absolute;
+  right: 14px;
+  top: 0px;
+  width: 40px;
+  font-size: 8.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ccc;
+}
