@@ -10,13 +10,17 @@ Meteor.publish('privateLists', function() {
   }
 });
 
-Meteor.publish('todos', function(listId) {
-  check(listId, String);
+// Meteor.publish('todos', function(dotId) {
+//   check(dotId, String);
 
-  return Todos.find({listId: listId});
-});
+//   return Todos.find({dotId: dotId});
+// });
+
+
+Meteor.publish('todos', function(){
+  return Todos.find({});
+})
 
 Meteor.publish('dots', function() {
-
   return Dots.find({});
 });

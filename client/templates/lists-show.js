@@ -7,6 +7,8 @@ var listRenderHold = LaunchScreen.hold();
 listFadeInHold = null;
 
 Meteor.subscribe("dots");
+Meteor.subscribe("todos");
+
 
 Template.listsShow.onRendered(function() {
   if (firstRender) {
@@ -39,6 +41,10 @@ Template.listsShow.helpers({
     return Session.get(EDITING_KEY);
   },
 
+  dots: function(listId) {
+    return Dots.find({listId: listId._id});
+  },
+
   todosReady: function() {
     return Router.current().todosHandle.ready();
   },
@@ -47,8 +53,8 @@ Template.listsShow.helpers({
     return Todos.find({listId: listId}, {sort: {createdAt : -1}});
   },
 
-  dots: function(listId) {
-    return Dots.find({listId: listId._id});
+  items: function(dotId){
+    return Todos.find({dotId: dotId});
   },
 
   formattedDate: function(date) {
@@ -62,7 +68,6 @@ Template.listsShow.helpers({
     return month + ' ' + day.getDate();
   }
 });
-
 
 
 
@@ -174,23 +179,32 @@ Template.listsShow.events({
   },
 
   'click .js-todo-add': function(event, template) {
-    template.$('.js-todo-new input').focus();
+    var $this = $(event.target).parent();
+    var $items = $this.find('.items');
+    var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');
+
+    $items.append($itemInput);
+    $itemInput.focus();
   },
 
-  'submit .js-todo-new': function(event) {
+  'blur .js-todo-new': function(event) {
     event.preventDefault();
 
-    var $input = $(event.target).find('[type=text]');
-    if (! $input.val())
-      return;
+    var $input = $(event.target);
 
+    if (!$input.val()){
+      $input.remove();
+      return;
+    }
+
+    console.log($input.val());
+    console.log(this._id);
     Todos.insert({
-      listId: this._id,
+      dotId: this._id,
       text: $input.val(),
-      checked: false,
       createdAt: new Date()
     });
-    Lists.update(this._id, {$inc: {incompleteCount: 1}});
-    $input.val('');
+
+    $input.remove();
   }
 });
