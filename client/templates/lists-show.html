@@ -63,7 +63,9 @@
                 <input class="item" type="text" value="{{text}}">
               {{/each}}
             </div>
-            <div class="day">{{formattedDate date}}</div>
+            <div class="date">
+              <div class="month">{{formattedDay date}} {{formattedDate date}}</div>
+            </div>
           </li>
         {{/each}}
         </ul>

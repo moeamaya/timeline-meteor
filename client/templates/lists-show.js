@@ -66,6 +66,13 @@ Template.listsShow.helpers({
     var day = new Date(date);
     var month = monthNames[day.getMonth()];
     return month + ' ' + day.getDate();
+  },
+
+  formattedDay: function(date){
+    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    var day = new Date(date).getDay();
+    return days[day];
   }
 });
 
@@ -197,8 +204,6 @@ Template.listsShow.events({
       return;
     }
 
-    console.log($input.val());
-    console.log(this._id);
     Todos.insert({
       dotId: this._id,
       text: $input.val(),
