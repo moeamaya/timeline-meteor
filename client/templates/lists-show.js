@@ -210,6 +210,18 @@ Template.listsShow.events({
       createdAt: new Date()
     });
 
+    Lists.update(this.listId, {$inc: {incompleteCount: 1}});
+
     $input.remove();
+  },
+
+
+  'keydown input[type=text]': function(event) {
+    // ESC or ENTER
+    if (event.which === 27 || event.which === 13) {
+      event.preventDefault();
+      event.target.blur();
+    }
   }
+
 });

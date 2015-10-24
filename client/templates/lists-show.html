@@ -44,15 +44,10 @@
         </div>
       {{/if}}
 
-      <form class="js-todo-new todo-new input-symbol">
-        <input type="text" placeholder="Type to add new tasks">
-        <span class="icon-add js-todo-add"></span>
-      </form>
     </nav>
 
     <div class="content-scrollable list-items">
-      <div class="timeline" style="
-        z-index: 1000000000;">
+      <div class="timeline" style="z-index: 1000000000;">
 
         <ul>
         {{#each dots this}}
@@ -60,7 +55,7 @@
             <div class="circle js-todo-add"></div>
             <div class="items">
               {{#each items _id}}
-                <input class="item" type="text" value="{{text}}">
+                <div><input class="item" type="text" value="{{text}}"></div>
               {{/each}}
             </div>
             <div class="date">
