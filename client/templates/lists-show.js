@@ -1,10 +1,17 @@
 var EDITING_KEY = 'editingList';
 Session.setDefault(EDITING_KEY, false);
 
+var EDITING_ITEM = 'editingItem';
+Session.setDefault(EDITING_ITEM, false);
+
+
+
+
 // Track if this is the first time the list template is rendered
 var firstRender = true;
 var listRenderHold = LaunchScreen.hold();
 listFadeInHold = null;
+
 
 Meteor.subscribe("dots");
 Meteor.subscribe("todos");
@@ -39,6 +46,16 @@ Template.listsShow.onRendered(function() {
 Template.listsShow.helpers({
   editing: function() {
     return Session.get(EDITING_KEY);
+  },
+  
+  editingItem: function(item) {
+    var sessionItem = Session.get(EDITING_ITEM);
+    
+    if (sessionItem == item) {
+      return true;
+    } else {
+      return false;
+    }
   },
 
   dots: function(listId) {
@@ -130,6 +147,41 @@ var toggleListPrivacy = function(list) {
   }
 };
 
+
+
+var editItem = function(item, template) {
+  Session.set(EDITING_ITEM, item._id);
+
+  // force the template to redraw based on the reactive change
+  Tracker.flush();
+  this.$('input[type=text]').focus();
+};
+
+var saveItem = function(item, template, text) {
+  Session.set(EDITING_ITEM, false);
+
+  Todos.update(item._id, {$set: {text: text}});
+};
+
+var deleteItem = function(item) {
+  var message = "Are you sure you want to delete the item?";
+
+  if (confirm(message)) {
+    // we must remove each item individually from the client
+    var dot = Dots.findOne({_id: item.dotId});
+    
+    Lists.update(dot.listId, {$inc: {incompleteCount: -1}});
+
+    Todos.remove(item._id);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+
+
+
 Template.listsShow.events({
   'click .js-cancel': function() {
     Session.set(EDITING_KEY, false);
@@ -186,12 +238,19 @@ Template.listsShow.events({
   },
 
   'click .js-todo-add': function(event, template) {
+    Session.set(EDITING_ITEM, false);
+
     var $this = $(event.target).parent();
     var $items = $this.find('.items');
+    var wrapper = $('<div class="item-show"></div>')
     var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');
 
-    $items.append($itemInput);
+    $items.append(wrapper.append($itemInput));
     $itemInput.focus();
+  },
+
+  'click .item-show': function(event, template) {
+    editItem(this, template);
   },
 
   'blur .js-todo-new': function(event) {
@@ -199,8 +258,8 @@ Template.listsShow.events({
 
     var $input = $(event.target);
 
-    if (!$input.val()){
-      $input.remove();
+    if ($input.val() == ""){
+      $input.parent().remove();
       return;
     }
 
@@ -215,6 +274,17 @@ Template.listsShow.events({
     $input.remove();
   },
 
+  'mousedown .delete': function(event, template) {
+    event.preventDefault();
+    
+    deleteItem(this);
+  },
+
+  'blur .item': function(event, template) {
+    event.preventDefault();
+    var text = event.target.value;
+    saveItem(this, template, text)
+  },
 
   'keydown input[type=text]': function(event) {
     // ESC or ENTER

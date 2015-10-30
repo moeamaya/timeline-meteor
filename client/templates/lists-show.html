@@ -55,7 +55,16 @@
             <div class="circle js-todo-add"></div>
             <div class="items">
               {{#each items _id}}
-                <div><input class="item" type="text" value="{{text}}"></div>
+                {{#if editingItem _id}}
+                  <div class="item-show">
+                    <input class="item" type="text" value="{{text}}">
+                    <div class="delete js-delete-item">DELETE</div>
+                  </div>
+                {{else}}
+                  <div class="item-show">
+                    <div class="item-text">{{text}}</div>
+                  </div>
+                {{/if}}
               {{/each}}
             </div>
             <div class="date">
