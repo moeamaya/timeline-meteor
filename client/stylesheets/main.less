@@ -29,31 +29,51 @@
 @import '../templates/app-not-found.import.less';
 @import '../templates/loading.import.less';
 
+
+
 .timeline {
-  position: absolute;
-  left: 48%;
   padding-top: 30px;
-  border-left: 2px solid rgba(0,0,0,0.2);
 }
 
 .dot {
-  position: relative;
-  left: -6px;
+  display: flex;
+  justify-content: center;
   padding-bottom: 35px;
-  cursor: pointer;
+  // border-top: 1px solid #ccc;
 }
-.dot:hover .circle {
-  -webkit-transform-origin: center;
-  -webkit-transform: scale(2.4);
+
+
+.date {
+  height: 10px;
+  width: 35%;
+  margin-right: 15px;
+  font-size: 9px;
+  font-weight: 500;
+  text-align: right;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ccc;
+  cursor: default;
+
+  transition: all 0.15s linear;
+  -webkit-transform-origin: center right;
 }
-.dot:hover .items {
-  -webkit-transform-origin: left center;
-  -webkit-transform: scale(1.2) translateX(2px) translateY(-3px);
-}
-.dot:hover + .dot .circle,
-.dot.prev .circle  {
+.dot:hover .date {
+  color: #999;
   -webkit-transform: scale(1.6);
-  -webkit-transform-origin: center;
+}
+
+
+.center {
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  left: ~"calc(50% - 1px)";
+  border-left: 2px solid rgba(0,0,0,0.2);
+  height: ~"calc(100% + 36px)";
 }
 
 .circle {
@@ -63,21 +83,53 @@
   border-radius: 50%;
   border: 2px solid #6F5C73;
   background: #fff;
+  cursor: pointer;
 
   transition: all 0.15s linear;
+}
+.circle:hover {
+  background: #ccc;
+}
+.dot:hover .circle {
+  -webkit-transform-origin: center;
+  -webkit-transform: scale(2.4);
+}
+.dot:hover + .dot .circle,
+.dot.prev .circle  {
+  -webkit-transform: scale(1.6);
+  -webkit-transform-origin: center;
 }
 
 
 .items {
-  position: absolute;
-  top: -6px;
-  margin-left: 20px;
-  width: 400px;
+  position: relative;
+  width: 40%;
+  margin-top: -6px;
+  margin-left: 15px;
 
   transition: all 0.15s linear;
+   -webkit-transform-origin: left top;
 }
+.dot:hover .items {
+
+  -webkit-transform: scale(1.2) translateY(-2px);
+}
+
+.item-show {
+  position: relative;
+}
+.item-text {
+  font-size: 14px;
+  line-height: 20px;
+  transition: all 0.2s linear;
+}
+.item-text:hover {
+  color: green;
+  cursor: pointer;
+}
+
 .item {
-  width: 100%;
+  width: 70%;
   color: #222;
   background: transparent;
   border: none;
@@ -92,36 +144,16 @@
 }
 
 .delete {
-  position: absolute;
-  top: 28px;
+  display: inline;
+  width: 20%;
   font-size: 10px;
   letter-spacing: 0.03em;
+  cursor: pointer;
+
   transition: all 0.2s linear; 
 }
 .delete:hover {
   color: red;
 }
 
-
-
-.date {
-  position: absolute;
-  right: 20px;
-  top: 0px;
-  width: 80px;
-  font-size: 9px;
-  font-weight: 500;
-  text-align: right;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #ccc;
-
-  transition: all 0.15s linear;
-}
-.dot:hover .date {
-  right: 30px;
-  color: #999;
-  -webkit-transform: scale(1.6);
-  -webkit-transform-origin: center right;
-}
 

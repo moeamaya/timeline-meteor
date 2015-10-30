@@ -238,9 +238,10 @@ Template.listsShow.events({
   },
 
   'click .js-todo-add': function(event, template) {
-    Session.set(EDITING_ITEM, false);
+    // consol
+    // Session.set(EDITING_ITEM, false);
 
-    var $this = $(event.target).parent();
+    var $this = $(event.target).parent().parent();
     var $items = $this.find('.items');
     var wrapper = $('<div class="item-show"></div>')
     var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');

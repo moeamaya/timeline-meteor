@@ -47,12 +47,19 @@
     </nav>
 
     <div class="content-scrollable list-items">
-      <div class="timeline" style="z-index: 1000000000;">
+      <!-- <div class="timeline" style="z-index: 1000000000;"> -->
 
-        <ul>
+        <ul class="timeline">
         {{#each dots this}}
           <li class="dot">
-            <div class="circle js-todo-add"></div>
+            <div class="date">
+              <div class="month">{{formattedDay date}} {{formattedDate date}}</div>
+            </div>
+            <div class="center">
+              <div class="line"></div>
+              <div class="circle js-todo-add">
+              </div>
+            </div>
             <div class="items">
               {{#each items _id}}
                 {{#if editingItem _id}}
@@ -67,13 +74,11 @@
                 {{/if}}
               {{/each}}
             </div>
-            <div class="date">
-              <div class="month">{{formattedDay date}} {{formattedDate date}}</div>
-            </div>
           </li>
         {{/each}}
         </ul>
-      </div>
+
+      <!-- </div> -->
 
       
 
