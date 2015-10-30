@@ -53,12 +53,11 @@
         {{#each dots this}}
           <li class="dot">
             <div class="date">
-              <div class="month">{{formattedDay date}} {{formattedDate date}}</div>
+              {{formattedDate date}}
             </div>
             <div class="center">
               <div class="line"></div>
-              <div class="circle js-todo-add">
-              </div>
+              {{formattedDot date}}
             </div>
             <div class="items">
               {{#each items _id}}

@@ -79,18 +79,43 @@ Template.listsShow.helpers({
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
     ];
-
-    var day = new Date(date);
-    var month = monthNames[day.getMonth()];
-    return month + ' ' + day.getDate();
-  },
-
-  formattedDay: function(date){
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    var day = new Date(date).getDay();
-    return days[day];
+    var today = new Date();
+    var current = new Date(date);
+    var past = '';
+    var day = current.getDay();
+    var month = monthNames[current.getMonth()];
+
+    if (current < today) {
+      past += 'past';
+    }
+    if (day == 0 || day == 6) {
+      past += 'weekend ';
+    }
+
+    return Spacebars.SafeString('<span class="' + past + '">' + days[day] + ' ' + month + ' ' + current.getDate() + '</span>');
+  },
+
+  formattedDot: function(date) {
+    var today = new Date();
+    var current = new Date(date);
+    var day = current.getDay();
+
+    var past = '';
+    var weekend = '';
+
+    if (current < today) {
+      past += 'past ';
+    }
+    // if (day == 0 || day == 6) {
+    //   weekend += 'weekend ';
+    // }
+
+    return Spacebars.SafeString('<div class="circle js-todo-add ' + past + weekend + '">' + '</div>');
   }
+
+
 });
 
 

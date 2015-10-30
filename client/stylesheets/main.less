@@ -39,7 +39,6 @@
   display: flex;
   justify-content: center;
   padding-bottom: 35px;
-  // border-top: 1px solid #ccc;
 }
 
 
@@ -57,6 +56,12 @@
 
   transition: all 0.15s linear;
   -webkit-transform-origin: center right;
+}
+.date .past {
+  color: #eee;
+}
+.date .weekend {
+  color: #fff;
 }
 .dot:hover .date {
   color: #999;
@@ -86,6 +91,10 @@
   cursor: pointer;
 
   transition: all 0.15s linear;
+}
+.circle.past {
+  border-color: #fff;
+  background: #6F5C73;
 }
 .circle:hover {
   background: #ccc;
