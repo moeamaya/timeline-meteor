@@ -86,6 +86,9 @@ Template.listsShow.helpers({
     var past = '';
     var day = current.getDay();
     var month = monthNames[current.getMonth()];
+    var todayText = '';
+
+    var isToday = (today.toDateString() == current.toDateString());
 
     // Bump current +24hours to get correct comparison 
     current.setDate(current.getDate() + 1);
@@ -95,8 +98,11 @@ Template.listsShow.helpers({
     if (day == 0 || day == 6) {
       past += 'weekend ';
     }
+    if (isToday) {
+      todayText += '<span class="today">Today</span>'
+    }
 
-    return Spacebars.SafeString('<span class="' + past + '">' + days[day] + ' ' + month + ' ' + current.getDate() + '</span>');
+    return Spacebars.SafeString('<span class="' + past + '">' + todayText + days[day] + ' ' + month + ' ' + current.getDate() + '</span>');
   },
 
   formattedDot: function(date) {
