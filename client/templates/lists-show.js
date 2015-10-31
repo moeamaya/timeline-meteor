@@ -87,8 +87,10 @@ Template.listsShow.helpers({
     var day = current.getDay();
     var month = monthNames[current.getMonth()];
 
-    if (current < today) {
-      past += 'past';
+    // Bump current +24hours to get correct comparison 
+    current.setDate(current.getDate() + 1);
+    if (current <= today) {
+      past += 'past ';
     }
     if (day == 0 || day == 6) {
       past += 'weekend ';
@@ -103,16 +105,14 @@ Template.listsShow.helpers({
     var day = current.getDay();
 
     var past = '';
-    var weekend = '';
 
+    // Bump current +24hours to get correct comparison 
+    current.setDate(current.getDate() + 1);
     if (current < today) {
       past += 'past ';
     }
-    // if (day == 0 || day == 6) {
-    //   weekend += 'weekend ';
-    // }
 
-    return Spacebars.SafeString('<div class="circle js-todo-add ' + past + weekend + '">' + '</div>');
+    return Spacebars.SafeString('<div class="circle js-todo-add ' + past + '">' + '</div>');
   }
 
 
@@ -172,7 +172,20 @@ var toggleListPrivacy = function(list) {
   }
 };
 
+var newItem = function($items) {
+  var wrapper = $('<div class="item-show"></div>')
+  var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');
+  var $submitBtn = $('<div class="submit js-submit-item">&check;</div>');
+  var $deleteBtn = $('<div class="delete js-delete-item">&times;</div>');
 
+  wrapper
+    .append($itemInput)
+    .append($submitBtn)
+    .append($deleteBtn)
+
+  $items.append(wrapper);
+  $itemInput.focus();
+};
 
 var editItem = function(item, template) {
   Session.set(EDITING_ITEM, item._id);
@@ -262,17 +275,13 @@ Template.listsShow.events({
     deleteList(this, template);
   },
 
+
+
   'click .js-todo-add': function(event, template) {
-    // consol
     // Session.set(EDITING_ITEM, false);
 
-    var $this = $(event.target).parent().parent();
-    var $items = $this.find('.items');
-    var wrapper = $('<div class="item-show"></div>')
-    var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');
-
-    $items.append(wrapper.append($itemInput));
-    $itemInput.focus();
+    var $items = $(event.target).parents('.dot').find('.items');
+    newItem($items);
   },
 
   'click .item-show': function(event, template) {
@@ -297,7 +306,10 @@ Template.listsShow.events({
 
     Lists.update(this.listId, {$inc: {incompleteCount: 1}});
 
-    $input.remove();
+    var $items = $input.parents('.items');
+    newItem($items);
+
+    $input.parents('.item-show').remove();
   },
 
   'mousedown .delete': function(event, template) {
@@ -306,10 +318,15 @@ Template.listsShow.events({
     deleteItem(this);
   },
 
+  'mousedown .js-submit-item': function(event, template) {
+    // console.log(event.target);
+  },
+
   'blur .item': function(event, template) {
     event.preventDefault();
+
     var text = event.target.value;
-    saveItem(this, template, text)
+    saveItem(this, template, text);
   },
 
   'keydown input[type=text]': function(event) {
@@ -317,6 +334,10 @@ Template.listsShow.events({
     if (event.which === 27 || event.which === 13) {
       event.preventDefault();
       event.target.blur();
+    }
+    if (event.which === 13){
+      var $items = $(event.target).parents('.dot').find('.items');
+      newItem($items);
     }
   }
 

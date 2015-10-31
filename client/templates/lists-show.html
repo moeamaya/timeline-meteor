@@ -61,16 +61,15 @@
             </div>
             <div class="items">
               {{#each items _id}}
+                <div class="item-show">
                 {{#if editingItem _id}}
-                  <div class="item-show">
-                    <input class="item" type="text" value="{{text}}">
-                    <div class="delete js-delete-item">DELETE</div>
-                  </div>
+                  <input class="item" type="text" value="{{text}}">
+                  <div class="submit js-submit-item">&check;</div>
+                  <div class="delete js-delete-item">&times;</div>
                 {{else}}
-                  <div class="item-show">
-                    <div class="item-text">{{text}}</div>
-                  </div>
+                  <div class="item-text">{{text}}</div>
                 {{/if}}
+                </div>
               {{/each}}
             </div>
           </li>

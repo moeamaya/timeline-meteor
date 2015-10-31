@@ -83,8 +83,8 @@
 
 .circle {
   position: relative;
-  height: 10px;
-  width: 10px;
+  height: 12px;
+  width: 12px;
   border-radius: 50%;
   border: 2px solid #6F5C73;
   background: #fff;
@@ -93,7 +93,7 @@
   transition: all 0.15s linear;
 }
 .circle.past {
-  border-color: #fff;
+  border: 3px solid #fff;
   background: #6F5C73;
 }
 .circle:hover {
@@ -113,56 +113,77 @@
 .items {
   position: relative;
   width: 40%;
-  margin-top: -6px;
+  margin-top: -8px;
   margin-left: 15px;
 
   transition: all 0.15s linear;
    -webkit-transform-origin: left top;
 }
 .dot:hover .items {
-
   -webkit-transform: scale(1.2) translateY(-2px);
 }
 
-.item-show {
+.item-show,
+.item-edit {
   position: relative;
 }
 .item-text {
   font-size: 14px;
-  line-height: 20px;
+  line-height: 26px;
+  // border-bottom: 2px solid #ccc !important;
   transition: all 0.2s linear;
 }
 .item-text:hover {
-  color: green;
+  color: #6F5C73;
   cursor: pointer;
 }
 
 .item {
   width: 70%;
   color: #222;
+  height: 26px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #ccc !important;
+  border-bottom: 2px solid #ccc !important;
   transition: all 0.2s linear; 
   padding: 0;
   margin: 0;
 }
 .item:focus {
-  border-color: green !important;
+  border-color: #6F5C73 !important;
   outline: none;
 }
 
-.delete {
-  display: inline;
-  width: 20%;
-  font-size: 10px;
-  letter-spacing: 0.03em;
+.items .submit {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  color: #fff;
+  background: #8cc63f;
+  border-radius: 20px;
   cursor: pointer;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+  text-indent: -3px;
+}
+
+.items .delete {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+  color: #fff;
+  background: #999;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
 
   transition: all 0.2s linear; 
 }
-.delete:hover {
-  color: red;
+.items .delete:hover {
+  background: #C63F49;
 }
 
 
