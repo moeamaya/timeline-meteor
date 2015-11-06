@@ -83,6 +83,7 @@ Template.listsShow.helpers({
 
     var today = new Date();
     var current = new Date(date);
+    var currentRound = new Date(date);
     var past = '';
     var day = current.getDay();
     var month = monthNames[current.getMonth()];
@@ -91,8 +92,8 @@ Template.listsShow.helpers({
     var isToday = (today.toDateString() == current.toDateString());
 
     // Bump current +24hours to get correct comparison 
-    current.setDate(current.getDate() + 1);
-    if (current <= today) {
+    currentRound.setDate(current.getDate() + 1);
+    if (currentRound <= today) {
       past += 'past ';
     }
     if (day == 0 || day == 6) {
