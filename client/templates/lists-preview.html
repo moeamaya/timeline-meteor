@@ -1,0 +1,30 @@
+<template name="listsPreview">
+  <div class="page lists-show">
+    <nav class="js-title-nav">
+        <div class="nav-group">
+          <a href="#" class="js-menu nav-item"><span class="icon-list-unordered" title="Show menu"></span></a>
+        </div>
+
+        <h1 class="js-edit-list title-page"><span class="title-wrapper">{{name}}</span> <span class="count-list">{{incompleteCount}}</span></h1>
+    </nav>
+
+    <div class="content-scrollable list-items">      
+
+       <ul class="timeline">
+        {{#each dots this}}
+          {{#each items _id}}
+          <li>
+            <div class="items">    
+              <div class="item-show">
+                <div class="item-text"><span>{{date dotId}}</span> — {{text}}</div>
+              </div>
+            </div>
+          </li>
+          <br>
+          {{/each}}
+        {{/each}}
+        </ul>
+        
+    </div>
+  </div>
+</template>
