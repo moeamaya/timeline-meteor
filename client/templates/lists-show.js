@@ -33,7 +33,7 @@ Template.listsShow.onRendered(function() {
       $(node)
         .hide()
         .insertBefore(next)
-        .fadeIn();
+        .fadeIn()
     },
     removeElement: function(node) {
       $(node).fadeOut(function() {
@@ -41,6 +41,10 @@ Template.listsShow.onRendered(function() {
       });
     }
   };
+
+  if (firstRender) {
+    template.$('.js-edit-form input[type=text]').focus();
+  }
 });
 
 Template.listsShow.helpers({
@@ -120,8 +124,16 @@ Template.listsShow.helpers({
     }
 
     return Spacebars.SafeString('<div class="circle js-todo-add ' + past + '">' + '</div>');
+  },
+  userEmail: function(user) {
+    var owner = Meteor.users.findOne({'_id': user});
+    if (owner) {
+      return owner.emails[0].address;
+    } else {
+      return '';
+    }
+    
   }
-
 
 });
 

@@ -122,7 +122,11 @@ Template.appBody.events({
   },
 
   'click .js-new-list': function() {
-    var list = {name: Lists.defaultName(), incompleteCount: 0};
+    if (Meteor.user()) {
+      var list = {name: Lists.defaultName(), incompleteCount: 0, userId: Meteor.user()._id};
+    } else {
+      var list = {name: Lists.defaultName(), incompleteCount: 0};
+    }
     list._id = Lists.insert(list);
     
     // Add default number of days
