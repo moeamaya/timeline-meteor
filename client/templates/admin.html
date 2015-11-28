@@ -1,0 +1,15 @@
+<template name="admin">
+  <h1>Admin Panel</h1>
+  <h3>Number of users: {{userCount}}</h3>
+
+  <ul>
+  {{#each allUsers}}
+    <li>
+      Id: {{_id}}<br>
+      Email: {{userEmail}}<br>
+    </li>
+    <br>
+  {{/each}}
+  </ul>
+
+</template>
