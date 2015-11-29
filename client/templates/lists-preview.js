@@ -11,6 +11,9 @@ var firstRender = true;
 var listRenderHold = LaunchScreen.hold();
 listFadeInHold = null;
 
+var monthViewArray = [];
+
+
 Meteor.subscribe("dots");
 Meteor.subscribe("todos");
 
@@ -51,7 +54,9 @@ Template.listsPreview.helpers({
   },
 
   dots: function(listId) {
-    return Dots.find({listId: listId._id});
+    if (listId) {
+      return Dots.find({listId: listId._id});  
+    }
   },
 
   todosReady: function() {
@@ -119,6 +124,16 @@ Template.listsPreview.helpers({
       return owner.emails[0].address;
     } else {
       return '';
+    }
+  },
+  monthTitle: function(dot) {
+    var dot = Dots.findOne({_id: dot});
+    var month = moment(dot.date).format('MMM');
+    if (_.contains(monthViewArray, month)){
+      return;
+    } else {
+      monthViewArray.push(month);
+      return Spacebars.SafeString('<h3 class="preview-month-title">' + month + '</h3>');
     }
     
   }

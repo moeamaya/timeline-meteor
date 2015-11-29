@@ -85,9 +85,9 @@ Template.listsShow.helpers({
     ];
     var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    var today = new Date();
-    var current = new Date(date);
-    var currentRound = new Date(date);
+    var today = new Date(new Date().setHours(0, 0, 0, 0));
+    var current = new Date(new Date(date).setHours(0, 0, 0, 0));
+    var currentRound = new Date(new Date(date).setHours(0, 0, 0, 0));
     var past = '';
     var day = current.getDay();
     var month = monthNames[current.getMonth()];
