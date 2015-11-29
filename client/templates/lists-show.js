@@ -132,7 +132,13 @@ Template.listsShow.helpers({
     } else {
       return '';
     }
-    
+  },
+  checkText: function(text) {
+    if (/\S/.test(text)){
+      return text;
+    } else {
+      return Spacebars.SafeString('<i>Add Text...</i>' )
+    }
   }
 
 });
