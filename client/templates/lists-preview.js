@@ -11,39 +11,17 @@ var firstRender = true;
 var listRenderHold = LaunchScreen.hold();
 listFadeInHold = null;
 
-var monthViewArray = [];
-
 
 Meteor.subscribe("dots");
 Meteor.subscribe("todos");
 
 
-Template.listsShow.onRendered(function() {
-  if (firstRender) {
-    // Released in app-body.js
-    listFadeInHold = LaunchScreen.hold();
-
-    // Handle for launch screen defined in app-body.js
-    listRenderHold.release();
-
-    firstRender = false;
-  }
-
-  this.find('.js-title-nav')._uihooks = {
-    insertElement: function(node, next) {
-      $(node)
-        .hide()
-        .insertBefore(next)
-        .fadeIn()
-    },
-    removeElement: function(node) {
-      $(node).fadeOut(function() {
-        this.remove();
-      });
-    }
-  };
-
+Template.listsPreview.onCreated(function(){
+  this.monthView = [];
+  // this.monthView.set([]);
 });
+
+
 
 
 Template.listsPreview.helpers({
@@ -129,10 +107,13 @@ Template.listsPreview.helpers({
   monthTitle: function(dot) {
     var dot = Dots.findOne({_id: dot});
     var month = moment(dot.date).format('MMM');
-    if (_.contains(monthViewArray, month)){
+    var temp = Template.instance().monthView;
+    if (_.contains(temp, month)){
       return;
     } else {
-      monthViewArray.push(month);
+      console.log('printing...')
+      temp.push(month);
+      Template.instance().monthView = temp;
       return Spacebars.SafeString('<h3 class="preview-month-title">' + month + '</h3>');
     }
     
