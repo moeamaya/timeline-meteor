@@ -18,7 +18,6 @@ Meteor.subscribe("todos");
 
 Template.listsPreview.onCreated(function(){
   this.monthView = [];
-  // this.monthView.set([]);
 });
 
 

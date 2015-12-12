@@ -30,19 +30,11 @@
           </div>
           <div class="options-web">
             <span>
-              <a href="{{pathFor 'listsPreview'}}">PREVIEW</a>
+              <a href="{{pathFor 'listsPreview'}}" style="'margin-right: 10px">PREVIEW</a>
             </span>
             <span style="font-size: 12px; margin-right: 10px;">
               {{userEmail userId}}
             </span>
-<!--             <a class="js-toggle-list-privacy nav-item">
-              {{#if userId}}
-                <span class="icon-lock" title="Make list public"></span>
-              {{else}}
-                <span class="icon-unlock" title="Make list private"></span>
-              {{/if}}
-            </a> -->
-
             <a class="js-delete-list nav-item">
               <span class="icon-trash" title="Delete list"></span>
             </a>
@@ -52,8 +44,17 @@
 
     </nav>
 
+    <form class="js-days-form">
+      <input type="text" value="{{days}}" class="js-days-update" data-days="{{days}}" placeholder="days" style="
+        position: absolute;
+        top: 60px;
+        z-index: 10000;
+        left: 14px;
+        border: 1px solid #F0F0F0;
+      ">
+    </form>
+
     <div class="content-scrollable list-items">
-      
 
         <ul class="timeline">
         {{#each dots this}}
@@ -69,7 +70,7 @@
               {{#each items _id}}
                 <div class="item-show">
                 {{#if editingItem _id}}
-                  <input class="item" type="text" value="{{text}}">
+                  <input class="item js-item" type="text" value="{{text}}">
                   <div class="submit js-submit-item">&check;</div>
                   <div class="delete js-delete-item">&times;</div>
                 {{else}}
@@ -81,6 +82,7 @@
           </li>
         {{/each}}
         </ul>
+
 
       <!-- </div> -->
 

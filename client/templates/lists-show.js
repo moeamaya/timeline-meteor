@@ -17,6 +17,11 @@ Meteor.subscribe("dots");
 Meteor.subscribe("todos");
 
 
+Template.listsShow.onCreated(function() {
+  this.daysArray = [];
+});
+
+
 Template.listsShow.onRendered(function() {
   if (firstRender) {
     // Released in app-body.js
@@ -41,11 +46,8 @@ Template.listsShow.onRendered(function() {
       });
     }
   };
-
-  if (firstRender) {
-    template.$('.js-edit-form input[type=text]').focus();
-  }
 });
+
 
 Template.listsShow.helpers({
   editing: function() {
@@ -62,8 +64,21 @@ Template.listsShow.helpers({
     }
   },
 
-  dots: function(listId) {
-    return Dots.find({listId: listId._id});
+  dots: function(list) {
+    // var dots = [];
+    // var start = new Date(list.start);
+    // for (var i = 0; i < list.days; i++) {
+    //   var day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+    //   dots.push({name: day})
+    // }
+    // return dots
+    console
+
+    var dots = Dots.find({listId: list._id});
+    dots.forEach(function(dot){
+      Template.instance().daysArray.push(dot);
+    });
+    return dots
   },
 
   todosReady: function() {
@@ -199,7 +214,7 @@ var toggleListPrivacy = function(list) {
 
 var newItem = function($items) {
   var wrapper = $('<div class="item-show"></div>')
-  var $itemInput = $('<input class="item js-todo-new" type="text" placeholder="Add event...">');
+  var $itemInput = $('<input class="item js-item js-todo-new" type="text" placeholder="Add event...">');
   var $submitBtn = $('<div class="submit js-submit-item">&check;</div>');
   var $deleteBtn = $('<div class="delete js-delete-item">&times;</div>');
 
@@ -250,7 +265,7 @@ Template.listsShow.events({
     Session.set(EDITING_KEY, false);
   },
 
-  'keydown input[type=text]': function(event) {
+  'keydown .js-item': function(event) {
     // ESC
     if (27 === event.which) {
       event.preventDefault();
@@ -354,7 +369,7 @@ Template.listsShow.events({
     saveItem(this, template, text);
   },
 
-  'keydown input[type=text]': function(event) {
+  'keydown .js-item': function(event) {
     // ESC or ENTER
     if (event.which === 27 || event.which === 13) {
       event.preventDefault();
@@ -363,6 +378,39 @@ Template.listsShow.events({
     if (event.which === 13){
       var $items = $(event.target).parents('.dot').find('.items');
       newItem($items);
+    }
+  },
+
+  'submit .js-days-form': function(event) {
+    event.preventDefault();
+    console.log('hey, fuck you')
+
+    var $input = $(event.currentTarget[0]);
+    var prev = $input.data('days');
+    var next = $input.val();
+    var daysArray = Template.instance().daysArray;
+    var delta = next - prev;
+
+    // Remove days from the timeline
+    if (delta < 0) {
+      var message = "Are you sure you want to delete " + Math.abs(delta) + " days?";
+      if (confirm(message)) {
+        var range = Math.abs(delta);
+        for (i = 0; i < range; i++) {
+          var day = daysArray.pop();
+          var dotId = day._id;
+
+          // we must remove each item individually from the client
+          Dots.remove(dotId);
+      
+          var todos = Todos.find({dotId: dotId});
+          todos.forEach(function(todo){
+            Lists.update(day.listId, {$inc: {incompleteCount: -1}});
+            Lists.update(day.listId, {$inc: {days: -1}});
+            Todos.remove(todo._id);
+          });
+        }
+      }
     }
   }
 

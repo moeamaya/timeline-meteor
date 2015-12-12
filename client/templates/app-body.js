@@ -128,9 +128,9 @@ Template.appBody.events({
 
   'click .js-new-list': function() {
     if (Meteor.user()) {
-      var list = {name: Lists.defaultName(), incompleteCount: 0, userId: Meteor.user()._id};
+      var list = {name: Lists.defaultName(), incompleteCount: 0, userId: Meteor.user()._id, days: 30};
     } else {
-      var list = {name: Lists.defaultName(), incompleteCount: 0};
+      var list = {name: Lists.defaultName(), incompleteCount: 0, days: 30};
     }
     list._id = Lists.insert(list);
     
