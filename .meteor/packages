@@ -19,3 +19,4 @@ tracker
 check
 momentjs:moment
 reactive-var
+percolate:migrations
