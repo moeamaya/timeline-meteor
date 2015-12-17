@@ -44,12 +44,9 @@
 
     </nav>
 
-    <form class="js-days-form">
+    <form class="days-form js-days-form">
+      <label>NUMBER OF DAYS</label>
       <input type="text" value="{{days}}" class="js-days-update" data-days="{{days}}" placeholder="days" style="
-        position: absolute;
-        top: 60px;
-        z-index: 10000;
-        left: 14px;
         border: 1px solid #F0F0F0;
       ">
     </form>
@@ -73,6 +70,9 @@
                   <input class="item js-item" type="text" value="{{text}}">
                   <div class="submit js-submit-item">&check;</div>
                   <div class="delete js-delete-item">&times;</div>
+                  <br>
+                  <label>Milestone</label>
+                  <input class="js-milestone" type="checkbox">
                 {{else}}
                   <div class="item-text">{{checkText text}}</div>
                 {{/if}}

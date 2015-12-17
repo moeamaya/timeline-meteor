@@ -135,7 +135,7 @@ Template.appBody.events({
     list._id = Lists.insert(list);
     
     // Add default number of days
-    var today = new Date();
+    var today = new Date(new Date().setHours(0, 0, 0, 0));
     for (var i = 0; i < 30; i++) {
       var day = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
 

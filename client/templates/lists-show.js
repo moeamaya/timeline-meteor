@@ -23,6 +23,7 @@ Template.listsShow.onCreated(function() {
 
 
 Template.listsShow.onRendered(function() {
+  var self = this;
   if (firstRender) {
     // Released in app-body.js
     listFadeInHold = LaunchScreen.hold();
@@ -32,6 +33,13 @@ Template.listsShow.onRendered(function() {
 
     firstRender = false;
   }
+
+  // create local days array
+  var id = self.data._id;
+  var dots = Dots.find({listId: id});
+  dots.forEach(function(dot){
+    self.daysArray.push(dot);
+  });
 
   this.find('.js-title-nav')._uihooks = {
     insertElement: function(node, next) {
@@ -65,19 +73,11 @@ Template.listsShow.helpers({
   },
 
   dots: function(list) {
-    // var dots = [];
-    // var start = new Date(list.start);
-    // for (var i = 0; i < list.days; i++) {
-    //   var day = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
-    //   dots.push({name: day})
-    // }
-    // return dots
-    console
-
     var dots = Dots.find({listId: list._id});
-    dots.forEach(function(dot){
-      Template.instance().daysArray.push(dot);
-    });
+    // dots.forEach(function(dot){
+    //   Template.instance().daysArray.push(dot);
+    // });
+    
     return dots
   },
 
@@ -273,6 +273,10 @@ Template.listsShow.events({
     }
   },
 
+  'change .js-milestone': function(event) {
+    console.log('changed')
+  },
+
   'blur input[type=text]': function(event, template) {
     // if we are still editing (we haven't just clicked the cancel button)
     if (Session.get(EDITING_KEY))
@@ -383,34 +387,57 @@ Template.listsShow.events({
 
   'submit .js-days-form': function(event) {
     event.preventDefault();
-    console.log('hey, fuck you')
 
     var $input = $(event.currentTarget[0]);
-    var prev = $input.data('days');
+    var prev = parseInt($input.attr('data-days'));
     var next = $input.val();
-    var daysArray = Template.instance().daysArray;
+    // var daysArray = Template.instance().daysArray;
     var delta = next - prev;
 
+    var check = prev + Math.abs(delta)
+
+    if (prev > 90 || prev + delta > 90){
+      var message = 'Sorry you can only create timelines of 90 days';
+      alert(message);
+      return;
+
     // Remove days from the timeline
-    if (delta < 0) {
+    } else if (delta < 0) {
       var message = "Are you sure you want to delete " + Math.abs(delta) + " days?";
       if (confirm(message)) {
         var range = Math.abs(delta);
         for (i = 0; i < range; i++) {
-          var day = daysArray.pop();
+          var day = Template.instance().daysArray.pop();
           var dotId = day._id;
 
           // we must remove each item individually from the client
           Dots.remove(dotId);
-      
+          Lists.update(day.listId, {$inc: {days: -1}});
+
           var todos = Todos.find({dotId: dotId});
           todos.forEach(function(todo){
             Lists.update(day.listId, {$inc: {incompleteCount: -1}});
-            Lists.update(day.listId, {$inc: {days: -1}});
             Todos.remove(todo._id);
           });
         }
       }
+
+    // Add days to the timeline
+    } else if (delta > 0) {
+      var range = Math.abs(delta);
+      var lastDay = Template.instance().daysArray[Template.instance().daysArray.length - 1].date;
+      var first = new Date(new Date(lastDay).setHours(0, 0, 0, 0));
+
+      for (var i = 0; i < range; i++) {
+        var index = i + 1
+        var day = new Date(first.getFullYear(), first.getMonth(), first.getDate() + index);
+        var dot = {date: day, listId: this._id };
+        dot._id = Dots.insert(dot);
+        Template.instance().daysArray.push(dot);
+
+        // update the list number of days
+        Lists.update(this._id, {$inc: {days: 1}});
+      };
     }
   }
 
