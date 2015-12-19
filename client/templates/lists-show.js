@@ -19,6 +19,7 @@ Meteor.subscribe("todos");
 
 Template.listsShow.onCreated(function() {
   this.daysArray = [];
+  this.milestoneClick = false;
 });
 
 
@@ -154,10 +155,16 @@ Template.listsShow.helpers({
     } else {
       return Spacebars.SafeString('<i>Add Text...</i>' )
     }
+  },
+  isChecked: function(value) {
+    if (value === true) {
+      return "checked";
+    } else {
+      return "";
+    }
   }
 
 });
-
 
 
 
@@ -273,10 +280,6 @@ Template.listsShow.events({
     }
   },
 
-  'change .js-milestone': function(event) {
-    console.log('changed')
-  },
-
   'blur input[type=text]': function(event, template) {
     // if we are still editing (we haven't just clicked the cancel button)
     if (Session.get(EDITING_KEY))
@@ -345,7 +348,8 @@ Template.listsShow.events({
     Todos.insert({
       dotId: this._id,
       text: $input.val(),
-      createdAt: new Date()
+      createdAt: new Date(),
+      milestone: false
     });
 
     Lists.update(this.listId, {$inc: {incompleteCount: 1}});
@@ -366,14 +370,29 @@ Template.listsShow.events({
     // console.log(event.target);
   },
 
+  'mousedown .js-milestone': function(event) {
+    Template.instance().milestoneClick = true;  
+  },
+
+  'change .js-milestone': function(event) {
+    var id = this._id;
+    var value = event.target.checked;
+    Todos.update(id, {$set: {milestone: value}}); 
+  },
+
   'blur .item': function(event, template) {
     event.preventDefault();
 
-    var text = event.target.value;
-    saveItem(this, template, text);
+    if (Template.instance().milestoneClick) {
+      Template.instance().milestoneClick = false;
+      $(this).focus();
+    } else {
+      var text = event.target.value;  
+      saveItem(this, template, text);
+    }
   },
 
-  'keydown .js-item': function(event) {
+  'keydown .js-item': function(event, template) {
     // ESC or ENTER
     if (event.which === 27 || event.which === 13) {
       event.preventDefault();
@@ -382,6 +401,7 @@ Template.listsShow.events({
     if (event.which === 13){
       var $items = $(event.target).parents('.dot').find('.items');
       newItem($items);
+      event.target.blur();
     }
   },
 

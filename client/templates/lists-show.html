@@ -71,8 +71,8 @@
                   <div class="submit js-submit-item">&check;</div>
                   <div class="delete js-delete-item">&times;</div>
                   <br>
-                  <label>Milestone</label>
-                  <input class="js-milestone" type="checkbox">
+                  <label><input class="js-milestone" type="checkbox" {{isChecked milestone}}>
+                  MILESTONE</label>
                 {{else}}
                   <div class="item-text">{{checkText text}}</div>
                 {{/if}}

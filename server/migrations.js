@@ -14,3 +14,20 @@ Migrations.add({
     }); 
   }
 });
+
+Migrations.add({
+  version: 2,
+  name: 'Adds milestone to all todos',
+  up: function() {
+    Todos.find().forEach(function (todo) {
+      if (todos.milestone != true) {
+        Todos.update(todo._id, {$set: {milestone: false}});
+      }
+    });
+  },
+  down: function() {
+    Todos.find().forEach(function (todo) {
+      Todos.update(todo._id, {$unset: {milestone : "" }});
+    }); 
+  }
+});

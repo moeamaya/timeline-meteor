@@ -22,8 +22,15 @@ Template.listsPreview.onCreated(function(){
 
 
 
-
 Template.listsPreview.helpers({
+  milestoneDate: function(todo) {
+    var todo = Todos.findOne({_id: todo});
+    var dot = Dots.findOne({_id: todo.dotId});
+    
+    if (todo.milestone) {
+      return Spacebars.SafeString("<li>" + moment(dot.date).format('MMM Do') + " — " + todo.text + "</li>");
+    }
+  },
 
   date: function(dot){
     var dot = Dots.findOne({_id: dot});
@@ -110,7 +117,6 @@ Template.listsPreview.helpers({
     if (_.contains(temp, month)){
       return;
     } else {
-      console.log('printing...')
       temp.push(month);
       Template.instance().monthView = temp;
       return Spacebars.SafeString('<h3 class="preview-month-title">' + month + '</h3>');

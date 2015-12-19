@@ -4,6 +4,15 @@
     <div class="preview-overview">
         <h1 class="js-edit-list title-page"><span class="title-wrapper">{{name}}</span></h1>
         <h5 class="count-list"><span>{{incompleteCount}}</span> tasks total</h5>
+
+        <h2>Milestone Dates</h2>
+        <ul class="preview-milestone-list">
+        {{#each dots this}}
+          {{#each items _id}}
+            {{milestoneDate _id}}
+          {{/each}}
+        {{/each}}
+        </ul>
     </div>
 
     <div class="preview-list">      
