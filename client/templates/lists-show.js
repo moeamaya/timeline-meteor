@@ -23,6 +23,7 @@ Template.listsShow.onCreated(function() {
 });
 
 
+
 Template.listsShow.onRendered(function() {
   var self = this;
   if (firstRender) {
@@ -55,7 +56,15 @@ Template.listsShow.onRendered(function() {
       });
     }
   };
+
+  setTimeout(function(){
+    // Scroll to Today
+    $('.content-scrollable').animate({
+      scrollTop: self.$(".today").position().top - 20
+    }, 500);
+  }, 100)
 });
+
 
 
 Template.listsShow.helpers({
