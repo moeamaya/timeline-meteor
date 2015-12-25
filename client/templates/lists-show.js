@@ -20,6 +20,7 @@ Meteor.subscribe("todos");
 Template.listsShow.onCreated(function() {
   this.daysArray = [];
   this.milestoneClick = false;
+  this.linkClick = false;
 });
 
 
@@ -248,7 +249,7 @@ var editItem = function(item, template) {
 
   // force the template to redraw based on the reactive change
   Tracker.flush();
-  this.$('input[type=text]').focus();
+  // this.$('.js-item').focus();
 };
 
 var saveItem = function(item, template, text) {
@@ -289,7 +290,7 @@ Template.listsShow.events({
     }
   },
 
-  'blur input[type=text]': function(event, template) {
+  'blur .js-item': function(event, template) {
     // if we are still editing (we haven't just clicked the cancel button)
     if (Session.get(EDITING_KEY))
       saveList(this, template);
@@ -383,6 +384,11 @@ Template.listsShow.events({
     Template.instance().milestoneClick = true;  
   },
 
+  'mousedown .js-link': function(event) {
+    Template.instance().linkClick = true;
+    console.log('sup')
+  },
+
   'change .js-milestone': function(event) {
     var id = this._id;
     var value = event.target.checked;
@@ -395,6 +401,8 @@ Template.listsShow.events({
     if (Template.instance().milestoneClick) {
       Template.instance().milestoneClick = false;
       $(this).focus();
+    } else if (Template.instance().linkClick) {
+      Template.instance().linkClick = false;
     } else {
       var text = event.target.value;  
       saveItem(this, template, text);

@@ -1,5 +1,5 @@
 .preview-overview {
-  width: 50%;
+  width: 100%;
   padding: 3em;
   h1 {
     color: #fff;
@@ -30,11 +30,18 @@
 }
 
 .preview-list {
-  width: 50%;
+  width: 100%;
   background: #fff;
   padding: 3em;
   ul li {
     font-size: 1em;
     margin: 18px 0;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .preview-overview,
+  .preview-list {
+    width: 100%
   }
 }
