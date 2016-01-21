@@ -28,7 +28,7 @@ Template.listsPreview.helpers({
     var dot = Dots.findOne({_id: todo.dotId});
     
     if (todo.milestone) {
-      return Spacebars.SafeString("<li>" + moment(dot.date).format('MMM Do') + " — " + todo.text + "</li>");
+      return Spacebars.SafeString("<li><b>" + moment(dot.date).format('MMM Do') + "</b> — " + todo.text + "</li>");
     }
   },
 
